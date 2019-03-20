@@ -43,8 +43,8 @@ if (System.env.TRAVIS_TAG != null && !System.env.TRAVIS_TAG.isEmpty()) {
     ext.config.build_number = System.env.TRAVIS_TAG.substring(0, System.env.TRAVIS_TAG.length()-1)
     ext.config.build_type = System.env.TRAVIS_TAG.substring(System.env.TRAVIS_TAG.length()-1)
 } else {
-    ext.config.build_number = "0000"
-    ext.config.build_type = "r"
+    ext.config.build_number = config.permissions_build_version
+    ext.config.build_type = config.permissions_build_type
 }
 
 // Apply Plugins
@@ -66,7 +66,6 @@ dependencies {
     compile project(":MyEssentials-Core")
     compile 'info.servertools.core:ServerTools-CORE:1.7.10-2.2.0.72:deobf'
 
-    testCompile project(":MyEssentials-TestSuite")
 }
 
 // Process Resources, injecting version numbers in
@@ -82,10 +81,4 @@ processResources {
     }
 }
 
-// Setup Curse Upload task
-curse {
-    apiKey = System.env.CURSEFORGEKEY
-    projectId = config.project_id
-    changelog = "" // TODO Add changelog support
-    releaseType = config.build_type.equals('a') ? "alpha" : (config.build_type.equals('b') ? "beta" : "release")
-}
+
